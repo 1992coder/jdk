@@ -47,7 +47,7 @@ package java.math;
 class SignedMutableBigInteger extends MutableBigInteger {
 
    /**
-     * The sign of this MutableBigInteger.
+     * The sign of this MutableBigInteger.MutableBigInteger的标志
      */
     int sign = 1;
 
@@ -131,5 +131,6 @@ class SignedMutableBigInteger extends MutableBigInteger {
     public String toString() {
         return this.toBigInteger(sign).toString();
     }
+  
 
 }
