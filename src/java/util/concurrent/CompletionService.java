@@ -94,6 +94,7 @@ public interface CompletionService<V> {
      *
      * @return the Future representing the next completed task
      * @throws InterruptedException if interrupted while waiting
+     * 有中断异常的一定是阻塞的  只有线程阻塞在唤醒的时候发生中断异常
      */
     Future<V> take() throws InterruptedException;
 

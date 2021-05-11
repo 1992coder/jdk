@@ -383,12 +383,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     private static final int CAPACITY   = (1 << COUNT_BITS) - 1;
 
     // runState is stored in the high-order bits
-    private static final int RUNNING    = -1 << COUNT_BITS;
-    private static final int SHUTDOWN   =  0 << COUNT_BITS;
-    private static final int STOP       =  1 << COUNT_BITS;
-    private static final int TIDYING    =  2 << COUNT_BITS;
-    private static final int TERMINATED =  3 << COUNT_BITS;
-
+    private static final int RUNNING    = -1 << COUNT_BITS;//111 = -1 为运行状态
+    private static final int SHUTDOWN   =  0 << COUNT_BITS;//000
+    private static final int STOP       =  1 << COUNT_BITS;//001
+    private static final int TIDYING    =  2 << COUNT_BITS;//010
+    private static final int TERMINATED =  3 << COUNT_BITS;//010
+    //当代码中出现ctl<0的时候 就是 运行状态
     // Packing and unpacking ctl
     private static int runStateOf(int c)     { return c & ~CAPACITY; }
     private static int workerCountOf(int c)  { return c & CAPACITY; }

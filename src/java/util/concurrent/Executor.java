@@ -125,6 +125,7 @@ package java.util.concurrent;
  * @since 1.5
  * @author Doug Lea
  */
+//线程池顶级接口,定义了一个执行无返回值任务的方法
 public interface Executor {
 
     /**
@@ -139,3 +140,8 @@ public interface Executor {
      */
     void execute(Runnable command);
 }
+//execute
+/**
+ * 执行无返回值任务
+ * 根据Executor的实现判断,可能是在新线程,线程池,线程调用中执行
+ */

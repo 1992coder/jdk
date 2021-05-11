@@ -204,7 +204,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
             throw ee;
 
         } finally {
-            for (int i = 0, size = futures.size(); i < size; i++)
+            for (int i = 0, size = futures.size(); i < size; i++)//取消任务只有线程响应中断状态才能取消成功
                 futures.get(i).cancel(true);
         }
     }
@@ -261,12 +261,13 @@ public abstract class AbstractExecutorService implements ExecutorService {
         throws InterruptedException {
         if (tasks == null)
             throw new NullPointerException();
-        long nanos = unit.toNanos(timeout);
+        long nanos = unit.toNanos(timeout);//醒来的时间
         ArrayList<Future<T>> futures = new ArrayList<Future<T>>(tasks.size());
         boolean done = false;
         try {
             for (Callable<T> t : tasks)
                 futures.add(newTaskFor(t));
+            //相比前面那个方法,将添加方法抽离是为了让计算结果更加准确.这个超时时间主要是所有的任务添加进去之后计算的
 
             final long deadline = System.nanoTime() + nanos;
             final int size = futures.size();
@@ -276,13 +277,13 @@ public abstract class AbstractExecutorService implements ExecutorService {
             for (int i = 0; i < size; i++) {
                 execute((Runnable)futures.get(i));
                 nanos = deadline - System.nanoTime();
-                if (nanos <= 0L)
+                if (nanos <= 0L)//如果nanos设置的比较小,那么会有没有执行完成的任务
                     return futures;
             }
 
             for (int i = 0; i < size; i++) {
                 Future<T> f = futures.get(i);
-                if (!f.isDone()) {
+                if (!f.isDone()) {//如果没有执行完成,继续执行
                     if (nanos <= 0L)
                         return futures;
                     try {
@@ -298,7 +299,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
             done = true;
             return futures;
         } finally {
-            if (!done)
+            if (!done)//最终没有全部执行完成的话取消任务,已经完成的不能取消
                 for (int i = 0, size = futures.size(); i < size; i++)
                     futures.get(i).cancel(true);
         }

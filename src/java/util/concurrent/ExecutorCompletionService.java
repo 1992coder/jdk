@@ -112,7 +112,7 @@ public class ExecutorCompletionService<V> implements CompletionService<V> {
     /**
      * FutureTask extension to enqueue upon completion
      */
-    private class QueueingFuture extends FutureTask<Void> {
+    private class QueueingFuture extends FutureTask<Void> {//装饰者模式(QueueingFuture和FutureTask 继承自 RunnableFuture接口 )
         QueueingFuture(RunnableFuture<V> task) {
             super(task, null);
             this.task = task;
@@ -168,7 +168,7 @@ public class ExecutorCompletionService<V> implements CompletionService<V> {
     public ExecutorCompletionService(Executor executor,
                                      BlockingQueue<Future<V>> completionQueue) {
         if (executor == null || completionQueue == null)
-            throw new NullPointerException();
+            throw new NullPointerException();//代理了线程池 包装了FutureTask,让任务执行完成后把自己放入completionQueue 提供了一个阻塞队列给invokeAny查看任务有没有执行完成
         this.executor = executor;
         this.aes = (executor instanceof AbstractExecutorService) ?
             (AbstractExecutorService) executor : null;
